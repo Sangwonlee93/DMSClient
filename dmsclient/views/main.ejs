@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+
+<head>
+  <meta charset="utf-8">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
+  <link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+  setInterval(loadmsg, 1000);
+
+  function loadmsg() {
+      $.ajax({
+          type: "GET",
+          url: "/loadmsg",
+          success: function(data) {
+              var content = "<tr><td>Topic</td><td>Content</td></tr>";
+              var msg = data;
+              for(var k = 0 ; k < msg.length; k++) {
+                  var d = '<tr>';
+                  var b= msg[k];
+                  d += "<td>"+b.topic+"</td>";
+                  d += "<td>"+b.content+"</td>";
+                  content += d;
+              }
+              $("#msg_list").html(content);
+          }
+      });
+  }
+
+  function doConnect() {
+    $.ajax({
+        type: "GET",
+        url: "/connect",
+        success: function(msg) {
+            alert(msg)
+        }
+    });
+  }
+  function doDisconnect() {
+    $.ajax({
+        type: "GET",
+        url: "/disconnect",
+        success: function(msg) {
+            alert(msg)
+        }
+    });
+  }
+  function sendmsg() {
+      var topic = document.getElementById('topic').value;
+      var content = document.getElementById('content').value;
+      req_body = {'topic': topic, 'content': content};
+      $.ajax({
+          type: "POST",
+          data: JSON.stringify(req_body),
+          contentType: 'application/json',
+          url: '/sendmsg',
+          success: function (msg) {
+              alert(msg);
+          }
+      });
+
+      document.getElementById('topic').value = "";
+      document.getElementById('content').value = "";
+  }
+  </script>
+</head>
+
+<body>
+    <div class="container">
+
+          <h1>Messaging Client Web Page</h1>
+          <hr>
+          <form id="example">
+              <fieldset>
+                <button type="button" class="btn btn-primary"  onClick="doConnect()">연결</button>
+                <button type='button' class='btn btn-danger' onClick="doDisconnect()">끊기</button>
+              </fieldset>
+          <hr>
+        <fieldset>
+          <h3> 메시지 수신 </h3>
+          <table id = 'msg_list' class="table table-bordered">
+
+          </table>
+  </fieldset>
+ <hr>
+  <fieldset>
+      <h3> 메시지 보내기 </h3>
+      <input type="text" style = "width :200px" class = 'form-control input-sm' placeholder="Topic"  id="topic" value="">
+      <br>
+      <input type="text"  style = "width :600px" class = 'form-control input-sm' placeholder="content" id="content" value="">
+      <br>
+      <button type='button' class='btn btn-default' onClick="sendmsg()">보내기</button>
+  </fieldset>
+</form>
+</div>
+</body>
+</html>
