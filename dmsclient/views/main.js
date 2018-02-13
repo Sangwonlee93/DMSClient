@@ -26,7 +26,9 @@ function doConnect() {
       success: function(data) {
           console.log(data);
           alert(data.msg);
-          $("#status").html("Connected broker : " + data.broker);
+          if(data.broker!="null"){
+            $("#status").html("Connected broker : " + data.broker);
+          }
       }
   });
 }

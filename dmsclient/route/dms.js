@@ -7,7 +7,7 @@ var home =function(req,res){
 };
 var connect =function(req,res){
   if(req.session.num){
-    res.send('It\'s already connected');
+    res.send({msg : 'It\'s already connected', broker : "null"});
   }else{
     cli.push(new MqttClient());
     req.session.num = cnt;
