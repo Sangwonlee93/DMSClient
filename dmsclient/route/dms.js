@@ -11,10 +11,8 @@ var connect =function(req,res){
   }else{
     cli.push(new MqttClient());
     req.session.num = cnt;
-    console.log(req.session.num);
     cnt++;
     cli[req.session.num].connect((ip)=>{
-      console.log(req.session.num);
       res.send({msg : 'Connection successful', broker: ip});
     });
   }
@@ -35,7 +33,6 @@ var sendmsg = function(req,res){
     var topic = req.body.topic;
     var content = req.body.content;
     cli[req.session.num].sendmsg(topic,content,()=>{
-      console.log(req.session.num);
       res.send("Message transfer successful");
     });
   }else{
