@@ -1,4 +1,4 @@
-//setInterval(loadmsg, 1000);
+setInterval(loadmsg, 1000);
 
 function loadmsg() {
     $.ajax({
@@ -6,16 +6,15 @@ function loadmsg() {
         url: "/loadmsg",
         success: function(data) {
             var content = "<tr><td>Topic</td><td>Content</td></tr>";
-
-            var msg = data['msg'];
-            for(var k = 1 ; k < brokers.length; k++) {
+            var msg = data;
+            for(var k = 0 ; k < msg.length; k++) {
                 var d = '<tr>';
                 var b= msg[k];
-                d += "<td>"+b.Topic+"</td>";
+                d += "<td>"+b.topic+"</td>";
                 d += "<td>"+b.content+"</td>";
                 content += d;
             }
-            $("#msg_list").html(content)
+            $("#msg_list").html(content);
         }
     });
 }
@@ -25,7 +24,7 @@ function doConnect() {
       type: "GET",
       url: "/connect",
       success: function(msg) {
-          alert(msg)
+          alert(msg);
       }
   });
 }
@@ -34,22 +33,21 @@ function doDisconnect() {
       type: "GET",
       url: "/disconnect",
       success: function(msg) {
-          alert(msg)
+          alert(msg);
       }
   });
 }
 function sendmsg() {
     var topic = document.getElementById('topic').value;
     var content = document.getElementById('content').value;
-//    req_body = {'topic': topic, 'content': content};
-
+    req_body = {'topic': topic, 'content': content};
     $.ajax({
         type: "POST",
-        data: {topic: topic, content: content},
+        data: JSON.stringify(req_body),
         contentType: 'application/json',
         url: '/sendmsg',
         success: function (msg) {
-            alert(msg)
+            alert(msg);
         }
     });
 

@@ -13,7 +13,7 @@ var app = express();
 app.set('views',__dirname+'/views');
 app.set('view engine','ejs');
 app.set('port',process.env.PORT || config.server_port);
-
+app.use('/views',express.static(__dirname+"/views"));
 app.use(session({
   secret:'asdno12@!@as2',
   resave: false,

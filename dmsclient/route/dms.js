@@ -15,10 +15,6 @@ var connect =function(req,res){
     cnt++;
     cli[req.session.num].connect(()=>{
       console.log(req.session.num);
-      for(var i =0; i < cli.length ; i++){
-        console.log(cli[i]);
-        console.log(" ");
-      }
       res.send("연결 성공");
     });
   }
