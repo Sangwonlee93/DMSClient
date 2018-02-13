@@ -18,27 +18,29 @@
           <h1>Messaging Client Web Page</h1>
           <hr>
           <form id="example">
-              <fieldset>
-                <button type="button" class="btn btn-primary"  onClick="doConnect()">연결</button>
-                <button type='button' class='btn btn-danger' onClick="doDisconnect()">끊기</button>
-              </fieldset>
+            <fieldset>
+              <button type="button" class="btn btn-primary"  onClick="doConnect()">Connect</button>
+              <button type='button' class='btn btn-danger' onClick="doDisconnect()">Disconnect</button>
+            </fieldset>
+            <fieldset>
+              <h4 id = "status"></h4>
+            </fieldset>
+            <hr>
+            <fieldset>
+              <h3> Receive message </h3>
+              <table id = 'msg_list' class="table table-bordered">
+              </table>
+            </fieldset>
           <hr>
-        <fieldset>
-          <h3> 메시지 수신 </h3>
-          <table id = 'msg_list' class="table table-bordered">
-
-          </table>
-  </fieldset>
- <hr>
-  <fieldset>
-      <h3> 메시지 보내기 </h3>
-      <input type="text" style = "width :200px" class = 'form-control input-sm' placeholder="Topic"  id="topic" value="">
-      <br>
-      <input type="text"  style = "width :600px" class = 'form-control input-sm' placeholder="content" id="content" value="">
-      <br>
-      <button type='button' class='btn btn-default' onClick="sendmsg()">보내기</button>
-  </fieldset>
-</form>
+          <fieldset>
+              <h3> Send message </h3>
+              <input type="text" style = "width :200px" class = 'form-control input-sm' placeholder="Topic"  id="topic" value="">
+              <br>
+              <input type="text"  style = "width :600px" class = 'form-control input-sm' placeholder="content" id="content" value="">
+              <br>
+              <button type='button' class='btn btn-success' onClick="sendmsg()">Send</button>
+          </fieldset>
+        </form>
 </div>
 </body>
 </html>

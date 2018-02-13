@@ -18,8 +18,8 @@ class MqttClient {
           this.msg.push({"topic" : topic.toString() , "content" :message.toString() });
         });
       });
+      callback(ip.ip);
     });
-    callback(null);
   }
   sendmsg(topic,content,callback){
     this.client.publish(topic, content);

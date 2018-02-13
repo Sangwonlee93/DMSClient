@@ -23,8 +23,10 @@ function doConnect() {
   $.ajax({
       type: "GET",
       url: "/connect",
-      success: function(msg) {
-          alert(msg);
+      success: function(data) {
+          console.log(data);
+          alert(data.msg);
+          $("#status").html("Connected broker : " + data.broker);
       }
   });
 }
@@ -34,6 +36,7 @@ function doDisconnect() {
       url: "/disconnect",
       success: function(msg) {
           alert(msg);
+          $("#status").html("");
       }
   });
 }

@@ -7,26 +7,26 @@ var home =function(req,res){
 };
 var connect =function(req,res){
   if(req.session.num){
-    res.send('이미 연결되어있는 상태입니다.');
+    res.send('It\'s already connected');
   }else{
     cli.push(new MqttClient());
     req.session.num = cnt;
     console.log(req.session.num);
     cnt++;
-    cli[req.session.num].connect(()=>{
+    cli[req.session.num].connect((ip)=>{
       console.log(req.session.num);
-      res.send("연결 성공");
+      res.send({msg : 'Connection successful', broker: ip});
     });
   }
 };
 var disconnect = function(req,res){
   if(!req.session.num){
-    res.send("이미 연결 해제 상태입니다.");
+    res.send("It's already disconnected");
   }else{
     cli[req.session.num].disconnet(()=>{
       cli[req.session.num] = null;
       delete req.session.num;
-      res.send('연결 해제 성공');
+      res.send('Disconnect Successful');
     });
   }
 };
@@ -36,10 +36,10 @@ var sendmsg = function(req,res){
     var content = req.body.content;
     cli[req.session.num].sendmsg(topic,content,()=>{
       console.log(req.session.num);
-      res.send("메시지 보내기 성공");
+      res.send("Message transfer successful");
     });
   }else{
-      res.send("연결 필요!");
+      res.send("Connection required");
   }
 };
 var loadmsg = function(req,res){
