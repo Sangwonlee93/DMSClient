@@ -1,22 +1,33 @@
 var MqttClient = require('../model/mqttclient');
-var cli=null;
+var cli=[];
+var cnt = 0;
 var home =function(req,res){
-  console.log(req.connection.remoteAddress + ' 접속');
   res.render('main.ejs');
 };
 var connect =function(req,res){
-  cli=new MqttClient();
-  cli.connect(()=>{
-    res.send("연결 성공");
-    console.log("sadasd");
-  });
+  if(req.session.num){
+    res.send('이미 연결되어있는 상태입니다.');
+  }else{
+    req.session.num = cnt;
+    console.log(req.session.num);
+    cnt++;
+    cli.push(new MqttClient());
+    cli[req.session.num].connect(()=>{
+      console.log(req.session.num);
+      res.send("연결 성공");
+    });
+  }
 };
 var disconnect = function(req,res){
-  if(cli==null){
-    res.send("이미 연결 해제 상태입니다.")
+  if(!req.session.num){
+    res.send("이미 연결 해제 상태입니다.");
   }else{
-    cli.disconnet(()=>{
-      cli = null;
+    cli[req.session.num].disconnet(()=>{
+      cli[req.session.num] = null;
+      delete req.session.num;
+      for(var i =0; i<cli.length; i++){
+        console.log(cli[i]);
+      }
       res.send('연결 해제 성공');
     });
   }
@@ -24,18 +35,17 @@ var disconnect = function(req,res){
 var sendmsg = function(req,res){
   var topic = req.body.topic;
   var content = req.body.content;
-  cli.sendmsg(topic,content,()=>{
-    console.log("test!!");
+  cli[req.session.num].sendmsg(topic,content,()=>{
+    console.log(req.session.num);
     res.send("메시지 보내기 성공");
   });
 };
 var loadmsg = function(req,res){
-  if(cli==null){
+  if(!req.session.num){
     var temp =[];
     res.send(temp);
   }else{
-    cli.loadmsg((msg)=>{
-      console.log(msg);
+    cli[req.session.num].loadmsg((msg)=>{
       res.send(msg);
     });
   }

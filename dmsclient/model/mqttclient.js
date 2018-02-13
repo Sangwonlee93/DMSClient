@@ -4,13 +4,12 @@ var p = new proper();
 class MqttClient {
   constructor(){
     this.client = null;
-    this.msg=new Array();
+    this.msg=[];
   }
   connect(callback){
     p.getIP((ip)=>{
 
-      var real = "tcp://"+ip['ip'];
-      console.log(real);
+      var real = "tcp://"+ip.ip;
       this.client = mqtt.connect(real);
       this.client.on('connect', () => {
         this.client.subscribe('#');
@@ -23,9 +22,7 @@ class MqttClient {
     callback(null);
   }
   sendmsg(topic,content,callback){
-    console.log(topic);
     this.client.publish(topic, content);
-    console.log("asdasdasdasd");
     callback(null);
   }
   loadmsg(callback){

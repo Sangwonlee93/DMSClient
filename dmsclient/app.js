@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var static = require('serve-static');
 var errorHandler = require('errorhandler');
 var expressErrorHandler = require('express-error-handler');
+var session = require('express-session');
 var config = require('./config');
 var route_loader = require('./route/route_loader');
 var app = express();
@@ -13,7 +14,11 @@ app.set('views',__dirname+'/views');
 app.set('view engine','ejs');
 app.set('port',process.env.PORT || config.server_port);
 
-
+app.use(session({
+  secret:'asdno12@!@as2',
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(bodyParser.urlencoded({extended : false}));
 
 app.use(bodyParser.json());
